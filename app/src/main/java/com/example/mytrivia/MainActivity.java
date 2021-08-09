@@ -2,9 +2,13 @@ package com.example.mytrivia;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.mytrivia.controller.ApplicationController;
+
+import com.example.mytrivia.data.AnswerListAsyncResponse;
+import com.example.mytrivia.data.Repository;
+import com.example.mytrivia.model.Question;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,12 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final String url = "https://raw.githubusercontent.com/curiousily/simple-quiz/master/script/statements-data.json";
-
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                response -> Log.d("Main", "onResponse: " + response.toString()),
-                error -> Log.d("Fetch Error", "onErrorResponse: " + "Unable to retrieve data"));
-
-        ApplicationController.getInstance().addToRequestQueue(jsonArrayRequest);
+        List<Question> questions = new Repository().getQuestion(questionArrayList ->
+                Log.d("Main", "onCreate: " + questionArrayList));
     }
 }
