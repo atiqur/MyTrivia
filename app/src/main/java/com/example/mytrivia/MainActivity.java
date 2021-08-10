@@ -9,6 +9,7 @@ import android.view.View;
 import com.example.mytrivia.data.Repository;
 import com.example.mytrivia.databinding.ActivityMainBinding;
 import com.example.mytrivia.model.Question;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -31,9 +32,29 @@ public class MainActivity extends AppCompatActivity {
         });
 
         binding.nextButton.setOnClickListener(view -> {
-            getNextQuestion();
             updateQuestion();
         });
+
+        binding.trueButton.setOnClickListener(view -> {
+            checkAnswer(true);
+            updateQuestion();
+        });
+
+        binding.falseButton.setOnClickListener(view -> {
+            checkAnswer(false);
+            updateQuestion();
+        });
+    }
+
+    private void checkAnswer(boolean userResponse) {
+        boolean answer = questionsList.get(currentQuestionNumber).isAnswerTrue();
+        int snackMessage;
+        if (answer == userResponse) {
+            snackMessage = R.string.correct;
+        } else {
+            snackMessage = R.string.incorrect;
+        }
+        Snackbar.make(binding.questionCard, snackMessage, Snackbar.LENGTH_SHORT).show();
     }
 
     private void getNextQuestion() {
@@ -41,7 +62,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateQuestion() {
+        getNextQuestion();
+
         String question = questionsList.get(currentQuestionNumber).getAnswer();
         binding.questionTextView.setText(question);
     }
+
+
 }
