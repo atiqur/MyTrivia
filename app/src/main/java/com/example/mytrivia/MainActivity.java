@@ -62,11 +62,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateQuestion() {
+        updateCounter();
         getNextQuestion();
 
         String question = questionsList.get(currentQuestionNumber).getAnswer();
         binding.questionTextView.setText(question);
     }
-
-
 }
