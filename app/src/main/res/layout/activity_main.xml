@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
             android:fontFamily="@font/architects_daughter"
-            android:text="Trivia"
+            android:text="@string/trivia"
             android:textColor="@color/white"
             android:textSize="48sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -97,8 +97,8 @@
 
         <TextView
             android:id="@+id/highest_score_text"
-            android:layout_width="139dp"
-            android:layout_height="23dp"
+            android:layout_width="119dp"
+            android:layout_height="25dp"
             android:layout_marginStart="258dp"
             android:layout_marginEnd="16dp"
             android:text="Highest Score: "
@@ -106,20 +106,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/current_score" />
+            app:layout_constraintTop_toBottomOf="@+id/current_score_text" />
 
         <TextView
-            android:id="@+id/current_score"
+            android:id="@+id/current_score_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="294dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
-            android:text="Score"
             android:textColor="@color/white"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.125"
+            app:layout_constraintHorizontal_bias="0.702"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tivia_banner_text" />
 
@@ -130,7 +129,6 @@
             android:layout_marginStart="334dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="0 / 900"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
