@@ -15,7 +15,7 @@ public class Repository {
     ArrayList<Question> questionArrayList = new ArrayList<>();
     final String url = "https://raw.githubusercontent.com/curiousily/simple-quiz/master/script/statements-data.json";
 
-    public List<Question> getQuestion(final AnswerListAsyncResponse callback) {
+    public List<Question> getQuestion(AnswerListAsyncResponse callback) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 response -> {
                     for (int i = 0; i < response.length(); i++) {

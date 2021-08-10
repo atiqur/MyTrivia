@@ -1,5 +1,7 @@
 package com.example.mytrivia.model;
 
+import androidx.annotation.NonNull;
+
 public class Question {
     private String answer;
     private boolean answerTrue;
@@ -28,6 +30,7 @@ public class Question {
         this.answerTrue = answerTrue;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Question{" +
