@@ -2,7 +2,6 @@ package com.example.mytrivia;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
@@ -20,7 +19,6 @@ import java.text.MessageFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String MESSAGE_ID = "highest_score";
     private int currentQuestionNumber = 0;
     private int currentScore = 0;
     private int highestScore = 0;
@@ -40,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         prefs = new Prefs(MainActivity.this);
         updateScore();
         highestScore = prefs.getHighestScore();
+        currentQuestionNumber = prefs.getState();
 
         binding.highestScoreText.setText(MessageFormat.format("Highest score: {0}", highestScore));
 
@@ -157,5 +156,6 @@ public class MainActivity extends AppCompatActivity {
             highestScore = currentScore;
             prefs.setHighestScore(highestScore);
         }
+        prefs.setState(currentQuestionNumber);
     }
 }
