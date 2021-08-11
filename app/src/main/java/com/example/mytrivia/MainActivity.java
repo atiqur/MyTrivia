@@ -2,6 +2,7 @@ package com.example.mytrivia;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
@@ -12,15 +13,19 @@ import com.example.mytrivia.data.Repository;
 import com.example.mytrivia.databinding.ActivityMainBinding;
 import com.example.mytrivia.model.Question;
 import com.example.mytrivia.model.Score;
+import com.example.mytrivia.util.Prefs;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.MessageFormat;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String MESSAGE_ID = "highest_score";
     private int currentQuestionNumber = 0;
     private int currentScore = 0;
+    private int highestScore = 0;
     private Score score;
+    private Prefs prefs;
     private ActivityMainBinding binding;
     List<Question> questionsList;
 
@@ -32,7 +37,11 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         score = new Score(currentScore);
+        prefs = new Prefs(MainActivity.this);
         updateScore();
+        highestScore = prefs.getHighestScore();
+
+        binding.highestScoreText.setText(MessageFormat.format("Highest score: {0}", highestScore));
 
         questionsList = new Repository().getQuestion(questionArrayList -> {
             updateCounter(questionArrayList);
@@ -139,5 +148,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (currentScore > highestScore) {
+            highestScore = currentScore;
+            prefs.setHighestScore(highestScore);
+        }
     }
 }
