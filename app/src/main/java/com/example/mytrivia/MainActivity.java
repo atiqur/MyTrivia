@@ -1,9 +1,12 @@
 package com.example.mytrivia;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.example.mytrivia.data.Repository;
 import com.example.mytrivia.databinding.ActivityMainBinding;
@@ -12,7 +15,6 @@ import com.example.mytrivia.model.Score;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,27 +32,18 @@ public class MainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         score = new Score(currentScore);
+        updateScore();
 
         questionsList = new Repository().getQuestion(questionArrayList -> {
             updateCounter(questionArrayList);
             binding.questionTextView.setText(questionArrayList.get(currentQuestionNumber).getAnswer());
         });
 
-        updateScore();
+        binding.nextButton.setOnClickListener(view -> updateQuestion());
 
-        binding.nextButton.setOnClickListener(view -> {
-            updateQuestion();
-        });
+        binding.trueButton.setOnClickListener(view -> checkAnswer(true));
 
-        binding.trueButton.setOnClickListener(view -> {
-            checkAnswer(true);
-            updateQuestion();
-        });
-
-        binding.falseButton.setOnClickListener(view -> {
-            checkAnswer(false);
-            updateQuestion();
-        });
+        binding.falseButton.setOnClickListener(view -> checkAnswer(false));
     }
 
     private void checkAnswer(boolean userResponse) {
@@ -59,9 +52,11 @@ public class MainActivity extends AppCompatActivity {
         if (answer == userResponse) {
             snackMessage = R.string.correct;
             addPoints();
+            fadeAnimation();
         } else {
             snackMessage = R.string.incorrect;
             deductPoints();
+            shakeAnimation();
         }
         Snackbar.make(binding.questionCard, snackMessage, Snackbar.LENGTH_SHORT).show();
     }
@@ -94,5 +89,55 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateCounter(List<Question> questionArrayList) {
         binding.questionNumberText.setText(MessageFormat.format("{0} / {1}", (currentQuestionNumber+1), questionArrayList.size()));
+    }
+
+    private void shakeAnimation() {
+        Animation shake = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shake_animation);
+        binding.questionCard.setAnimation(shake);
+
+        shake.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                binding.questionTextView.setTextColor(Color.RED);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.questionTextView.setTextColor(Color.WHITE);
+                updateQuestion();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+    }
+
+    private void fadeAnimation() {
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1.0f, 0.0f);
+        alphaAnimation.setDuration(300);
+        alphaAnimation.setRepeatCount(1);
+        alphaAnimation.setRepeatMode(Animation.REVERSE);
+
+        binding.questionCard.setAnimation(alphaAnimation);
+
+        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                binding.questionTextView.setTextColor(Color.GREEN);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.questionTextView.setTextColor(Color.WHITE);
+                updateQuestion();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 }
